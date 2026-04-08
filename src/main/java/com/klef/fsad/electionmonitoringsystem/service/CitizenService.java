@@ -8,4 +8,9 @@ public interface CitizenService
     public Citizen verifyCitizenLogin(String username, String password);
     public Citizen getCitizenByUsername(String username);
     public Citizen getCitizenByAadhaar(String aadhaarNumber);
+
+    // Polling Station specific
+    public Object getAllPollingStations();
+    public Object getPollingStationsByDistrict(String district);
+    public Object getPollingStationsByState(String state);
 }

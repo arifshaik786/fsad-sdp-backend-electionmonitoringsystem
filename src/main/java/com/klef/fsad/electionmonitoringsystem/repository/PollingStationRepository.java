@@ -13,4 +13,6 @@ public interface PollingStationRepository extends JpaRepository<PollingStation, 
     List<PollingStation> findByDistrict(String district);
 
     List<PollingStation> findByState(String state);
+
+    PollingStation findByStationName(String stationName);
 }

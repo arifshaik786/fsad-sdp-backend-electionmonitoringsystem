@@ -16,6 +16,9 @@ public class Admin
    @Column(length = 50, nullable = false)
    private String password;
 
+   @Column(length = 20)
+   private String role = "ADMIN";
+
    public String getEmail() {
       return email;
    }
@@ -32,8 +35,16 @@ public class Admin
       this.password = password;
    }
 
+   public String getRole() {
+      return role;
+   }
+
+   public void setRole(String role) {
+      this.role = role;
+   }
+
    @Override
    public String toString() {
-      return "Admin [email=" + email + ", password=" + password + "]";
+      return "Admin [email=" + email + ", role=" + role + "]";
    }
 }

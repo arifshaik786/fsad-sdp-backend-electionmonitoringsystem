@@ -76,7 +76,7 @@ public class CitizenController
                 return ResponseEntity.status(401).body("Invalid username or password");
             }
 
-            return ResponseEntity.ok().body("Login successful");
+            return ResponseEntity.ok().body(authenticatedCitizen);
         } 
         catch (Exception e) 
         {

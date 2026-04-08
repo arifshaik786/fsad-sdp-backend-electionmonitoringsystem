@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.klef.fsad.electionmonitoringsystem.entity.Admin;
 import com.klef.fsad.electionmonitoringsystem.entity.DataAnalyst;
@@ -16,6 +17,7 @@ import com.klef.fsad.electionmonitoringsystem.repository.ElectionObserverReposit
 import com.klef.fsad.electionmonitoringsystem.repository.PollingStationRepository;
 
 @Service
+@Transactional
 public class AdminServiceImpl implements AdminService
 {
     @Autowired
@@ -39,6 +41,7 @@ public class AdminServiceImpl implements AdminService
         {
             return "Admin already exists";
         }
+        admin.setRole("ADMIN");
         adminRepository.save(admin);
         return "Admin registered successfully";
     }
@@ -91,14 +94,14 @@ public class AdminServiceImpl implements AdminService
     // ── Data Analysts ───────────────────────────────────────────
 
     @Override
-    public String addDataAnalyst(DataAnalyst dataAnalyst)
+    public DataAnalyst addDataAnalyst(DataAnalyst dataAnalyst)
     {
         if (dataAnalystRepository.existsById(dataAnalyst.getEmail()))
         {
-            return "Data analyst already exists";
+            return null;
         }
-        dataAnalystRepository.save(dataAnalyst);
-        return "Data analyst added successfully";
+        dataAnalyst.setRole("DATA_ANALYST");
+        return dataAnalystRepository.save(dataAnalyst);
     }
 
     @Override
@@ -142,14 +145,14 @@ public class AdminServiceImpl implements AdminService
     // ── Election Observers ──────────────────────────────────────
 
     @Override
-    public String addElectionObserver(ElectionObserver electionObserver)
+    public ElectionObserver addElectionObserver(ElectionObserver electionObserver)
     {
         if (electionObserverRepository.existsById(electionObserver.getEmail()))
         {
-            return "Election observer already exists";
+            return null;
         }
-        electionObserverRepository.save(electionObserver);
-        return "Election observer added successfully";
+        electionObserver.setRole("ELECTION_OBSERVER");
+        return electionObserverRepository.save(electionObserver);
     }
 
     @Override
@@ -188,5 +191,19 @@ public class AdminServiceImpl implements AdminService
         observer.setAssignedStation(assignedStation);
         electionObserverRepository.save(observer);
         return "Station assigned successfully";
+    }
+
+    @Override
+    public String assignDistrictToObserver(String email, String district)
+    {
+        Optional<ElectionObserver> optional = electionObserverRepository.findById(email);
+        if (optional.isEmpty())
+        {
+            return "Election observer not found";
+        }
+        ElectionObserver observer = optional.get();
+        observer.setDistrict(district);
+        electionObserverRepository.save(observer);
+        return "District assigned successfully";
     }
 }

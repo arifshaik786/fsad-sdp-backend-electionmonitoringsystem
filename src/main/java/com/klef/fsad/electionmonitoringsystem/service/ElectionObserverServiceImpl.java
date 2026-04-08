@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.klef.fsad.electionmonitoringsystem.entity.ElectionObserver;
 import com.klef.fsad.electionmonitoringsystem.repository.ElectionObserverRepository;
+import com.klef.fsad.electionmonitoringsystem.repository.PollingStationRepository;
+import com.klef.fsad.electionmonitoringsystem.entity.PollingStation;
 
 @Service
 public class ElectionObserverServiceImpl implements ElectionObserverService
 {
     @Autowired
     private ElectionObserverRepository electionObserverRepository;
+
+    @Autowired
+    private PollingStationRepository pollingStationRepository;
 
     @Override
     public String registerElectionObserver(ElectionObserver electionObserver)
@@ -22,6 +27,7 @@ public class ElectionObserverServiceImpl implements ElectionObserverService
         {
             return "Election observer already exists";
         }
+        electionObserver.setRole("ELECTION_OBSERVER");
         electionObserverRepository.save(electionObserver);
         return "Election observer registered successfully";
     }
@@ -68,5 +74,17 @@ public class ElectionObserverServiceImpl implements ElectionObserverService
         observer.setAssignedStation(assignedStation);
         electionObserverRepository.save(observer);
         return "Station assigned successfully";
+    }
+
+    @Override
+    public PollingStation getPollingStationByName(String stationName)
+    {
+        return pollingStationRepository.findByStationName(stationName);
+    }
+
+    @Override
+    public List<PollingStation> getPollingStationsByDistrict(String district)
+    {
+        return pollingStationRepository.findByDistrict(district);
     }
 }

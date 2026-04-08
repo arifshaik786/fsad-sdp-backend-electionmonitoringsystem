@@ -26,7 +26,7 @@ public interface AdminService
     List<PollingStation> getPollingStationsByDistrict(String district);
 
     // ── Data Analysts ───────────────────────────────────────────
-    String addDataAnalyst(DataAnalyst dataAnalyst);
+    DataAnalyst addDataAnalyst(DataAnalyst dataAnalyst);
 
     List<DataAnalyst> getAllDataAnalysts();
 
@@ -37,7 +37,7 @@ public interface AdminService
     String assignDistrictToAnalyst(String email, String district);
 
     // ── Election Observers ──────────────────────────────────────
-    String addElectionObserver(ElectionObserver electionObserver);
+    ElectionObserver addElectionObserver(ElectionObserver electionObserver);
 
     List<ElectionObserver> getAllElectionObservers();
 
@@ -46,4 +46,6 @@ public interface AdminService
     String deleteElectionObserver(String email);
 
     String assignStationToObserver(String email, String assignedStation);
+
+    String assignDistrictToObserver(String email, String district);
 }

@@ -5,12 +5,18 @@ import org.springframework.stereotype.Service;
 
 import com.klef.fsad.electionmonitoringsystem.entity.Citizen;
 import com.klef.fsad.electionmonitoringsystem.repository.CitizenRepository;
+import com.klef.fsad.electionmonitoringsystem.repository.PollingStationRepository;
+import java.util.List;
+import com.klef.fsad.electionmonitoringsystem.entity.PollingStation;
 
 @Service
 public class CitizenServiceImpl implements CitizenService
 {
     @Autowired
     private CitizenRepository citizenRepository;
+
+    @Autowired
+    private PollingStationRepository pollingStationRepository;
 
     @Override
     public String registerCitizen(Citizen citizen) 
@@ -25,6 +31,7 @@ public class CitizenServiceImpl implements CitizenService
             return "Aadhaar already registered!";
         }
 
+        citizen.setRole("CITIZEN");
         citizenRepository.save(citizen);
         return "Citizen Registered Successfully";
     }
@@ -45,5 +52,23 @@ public class CitizenServiceImpl implements CitizenService
     public Citizen getCitizenByAadhaar(String aadhaarNumber) 
     {
         return citizenRepository.findByAadhaarNumber(aadhaarNumber);
+    }
+
+    @Override
+    public List<PollingStation> getAllPollingStations()
+    {
+        return pollingStationRepository.findAll();
+    }
+
+    @Override
+    public List<PollingStation> getPollingStationsByDistrict(String district)
+    {
+        return pollingStationRepository.findByDistrict(district);
+    }
+
+    @Override
+    public List<PollingStation> getPollingStationsByState(String state)
+    {
+        return pollingStationRepository.findByState(state);
     }
 }

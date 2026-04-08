@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.klef.fsad.electionmonitoringsystem.entity.DataAnalyst;
@@ -26,20 +27,15 @@ public class DataAnalystController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerDataAnalyst(@RequestBody DataAnalyst dataAnalyst) {
+	public ResponseEntity<?> registerDataAnalyst(@RequestBody DataAnalyst analyst) {
 		try {
-			if (dataAnalyst == null || dataAnalyst.getEmail() == null || dataAnalyst.getPassword() == null) {
+			if (analyst == null || analyst.getEmail() == null || analyst.getPassword() == null) {
 				return ResponseEntity.badRequest().body("Email and password are required");
 			}
-
-			dataAnalyst.setEmail(dataAnalyst.getEmail().trim().toLowerCase());
-			dataAnalyst.setPassword(dataAnalyst.getPassword().trim());
-
-			String message = dataAnalystService.registerDataAnalyst(dataAnalyst);
-			if ("Data analyst already exists".equals(message)) {
+			String message = dataAnalystService.registerDataAnalyst(analyst);
+			if (message.equals("Data analyst already exists")) {
 				return ResponseEntity.status(409).body(message);
 			}
-
 			return ResponseEntity.status(201).body(message);
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Internal Server Error");
@@ -61,11 +57,41 @@ public class DataAnalystController {
 				return ResponseEntity.status(401).body("Invalid email or password");
 			}
 
-			return ResponseEntity.ok().body("Login successful");
+			return ResponseEntity.ok().body(authenticatedDataAnalyst);
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
 	}
 
+	@GetMapping("/profile")
+	public ResponseEntity<?> getDataAnalystProfile(@RequestParam String email) {
+		try {
+			DataAnalyst analyst = dataAnalystService.getDataAnalystByEmail(email.trim().toLowerCase());
+			if (analyst == null) {
+				return ResponseEntity.status(404).body("Data analyst not found");
+			}
+			return ResponseEntity.ok(analyst);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
+	}
+
+	@GetMapping("/polling-stations/my-district")
+	public ResponseEntity<?> getPollingStationsByDistrict(@RequestParam String district) {
+		try {
+			return ResponseEntity.ok(dataAnalystService.getPollingStationsByDistrict(district.trim()));
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
+	}
+
+	@GetMapping("/polling-stations/all")
+	public ResponseEntity<?> getAllPollingStations() {
+		try {
+			return ResponseEntity.ok(dataAnalystService.getAllPollingStations());
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
+	}
 
 }

@@ -31,6 +31,9 @@ public class ElectionObserver
     @Column(length = 20)
     private String status;
 
+    @Column(length = 20)
+    private String role = "ELECTION_OBSERVER";
+
     public String getEmail() {
         return email;
     }
@@ -87,8 +90,16 @@ public class ElectionObserver
         this.status = status;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "ElectionObserver [email=" + email + ", observerName=" + observerName + "]";
+        return "ElectionObserver [email=" + email + ", observerName=" + observerName + ", role=" + role + "]";
     }
 }

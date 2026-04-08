@@ -17,4 +17,9 @@ public interface DataAnalystService
     String deleteDataAnalyst(String email);
 
     String assignDistrict(String email, String district);
+
+    // Polling Station specific
+    public Object getPollingStationsByDistrict(String district);
+
+    public Object getAllPollingStations();
 }

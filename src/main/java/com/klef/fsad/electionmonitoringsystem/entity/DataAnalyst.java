@@ -31,6 +31,9 @@ public class DataAnalyst
     @Column(length = 20)
     private String status;
 
+    @Column(length = 20)
+    private String role = "DATA_ANALYST";
+
     public String getEmail() {
         return email;
     }
@@ -87,8 +90,16 @@ public class DataAnalyst
         this.status = status;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "DataAnalyst [email=" + email + ", analystName=" + analystName + "]";
+        return "DataAnalyst [email=" + email + ", analystName=" + analystName + ", role=" + role + "]";
     }
 }
