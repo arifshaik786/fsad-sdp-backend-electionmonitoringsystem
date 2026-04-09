@@ -22,4 +22,5 @@ public interface ElectionObserverService
     // Polling Station specific
     public List<PollingStation> getPollingStationsByDistrict(String district);
     public Object getPollingStationByName(String stationName);
+    ElectionObserver updateElectionObserverProfile(ElectionObserver observer);
 }

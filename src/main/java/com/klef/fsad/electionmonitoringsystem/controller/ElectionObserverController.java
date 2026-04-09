@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.klef.fsad.electionmonitoringsystem.entity.ElectionObserver;
 import com.klef.fsad.electionmonitoringsystem.service.ElectionObserverService;
@@ -92,5 +93,24 @@ public class ElectionObserverController {
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
+	}
+	@PutMapping("/profile/update")
+	public ResponseEntity<?> updateElectionObserverProfile(@RequestBody ElectionObserver observer) {
+	    try {
+	        if (observer == null || observer.getEmail() == null || observer.getEmail().trim().isEmpty()) {
+	            return ResponseEntity.badRequest().body("Email is required");
+	        }
+
+	        observer.setEmail(observer.getEmail().trim().toLowerCase());
+	        ElectionObserver updated = electionObserverService.updateElectionObserverProfile(observer);
+
+	        if (updated == null) {
+	            return ResponseEntity.status(404).body("Election observer not found");
+	        }
+
+	        return ResponseEntity.ok(updated);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(500).body("Internal Server Error");
+	    }
 	}
 }

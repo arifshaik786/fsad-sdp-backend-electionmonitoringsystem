@@ -87,4 +87,17 @@ public class ElectionObserverServiceImpl implements ElectionObserverService
     {
         return pollingStationRepository.findByDistrict(district);
     }
+    @Override
+    public ElectionObserver updateElectionObserverProfile(ElectionObserver observer) {
+        Optional<ElectionObserver> optional = electionObserverRepository.findById(observer.getEmail());
+
+        if (optional.isEmpty()) {
+            return null;
+        }
+
+        ElectionObserver existing = optional.get();
+        existing.setPassword(observer.getPassword());
+
+        return electionObserverRepository.save(existing);
+    }
 }

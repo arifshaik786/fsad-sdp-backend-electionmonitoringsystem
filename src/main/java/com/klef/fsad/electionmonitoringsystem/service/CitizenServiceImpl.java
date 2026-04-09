@@ -71,4 +71,17 @@ public class CitizenServiceImpl implements CitizenService
     {
         return pollingStationRepository.findByState(state);
     }
+    @Override
+    public Citizen updateCitizenProfile(Citizen citizen) {
+        Citizen existing = citizenRepository.findByUsername(citizen.getUsername());
+
+        if (existing == null) {
+            return null;
+        }
+
+        existing.setPassword(citizen.getPassword());
+        existing.setAadhaarNumber(citizen.getAadhaarNumber());
+
+        return citizenRepository.save(existing);
+    }
 }

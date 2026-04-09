@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.klef.fsad.electionmonitoringsystem.entity.DataAnalyst;
 import com.klef.fsad.electionmonitoringsystem.service.DataAnalystService;
@@ -92,6 +93,25 @@ public class DataAnalystController {
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
+	}
+	@PutMapping("/profile/update")
+	public ResponseEntity<?> updateDataAnalystProfile(@RequestBody DataAnalyst analyst) {
+	    try {
+	        if (analyst == null || analyst.getEmail() == null || analyst.getEmail().trim().isEmpty()) {
+	            return ResponseEntity.badRequest().body("Email is required");
+	        }
+
+	        analyst.setEmail(analyst.getEmail().trim().toLowerCase());
+	        DataAnalyst updated = dataAnalystService.updateDataAnalystProfile(analyst);
+
+	        if (updated == null) {
+	            return ResponseEntity.status(404).body("Data analyst not found");
+	        }
+
+	        return ResponseEntity.ok(updated);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(500).body("Internal Server Error");
+	    }
 	}
 
 }

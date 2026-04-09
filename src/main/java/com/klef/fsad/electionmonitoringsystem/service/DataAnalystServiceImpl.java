@@ -87,4 +87,17 @@ public class DataAnalystServiceImpl implements DataAnalystService
     {
         return pollingStationRepository.findAll();
     }
+    @Override
+    public DataAnalyst updateDataAnalystProfile(DataAnalyst analyst) {
+        Optional<DataAnalyst> optional = dataAnalystRepository.findById(analyst.getEmail());
+
+        if (optional.isEmpty()) {
+            return null;
+        }
+
+        DataAnalyst existing = optional.get();
+        existing.setPassword(analyst.getPassword());
+
+        return dataAnalystRepository.save(existing);
+    }
 }

@@ -22,4 +22,6 @@ public interface DataAnalystService
     public Object getPollingStationsByDistrict(String district);
 
     public Object getAllPollingStations();
+    
+    DataAnalyst updateDataAnalystProfile(DataAnalyst analyst);
 }
