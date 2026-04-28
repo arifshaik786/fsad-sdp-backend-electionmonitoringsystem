@@ -13,7 +13,7 @@ public class DataAnalyst
     @Column(length = 100)
     private String email;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 255, nullable = false)
     private String password;
 
     @Column(length = 150)

@@ -38,7 +38,8 @@ public class SecurityConfig {
                         "/observerapi/login", "/observerapi/register",
                         "/auth/refresh", "/auth/logout",
                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
-                        "/adminapi/", "/citizenapi/", "/analystapi/", "/observerapi/"
+                        "/adminapi/", "/citizenapi/", "/analystapi/", "/observerapi/",
+                        "/api/otp/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )

@@ -19,7 +19,7 @@ public class Citizen
     @Column(name = "aadhaar_number", length = 50, nullable = false, unique = true)
     private String aadhaarNumber;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 255, nullable = false)
     private String password;
 
     @Column(length = 100)
