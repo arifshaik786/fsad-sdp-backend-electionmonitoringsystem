@@ -32,6 +32,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+                        "/", "/health",
+                        "/actuator/health", "/actuator/health/**",
                         "/adminapi/login", "/adminapi/register",
                         "/citizenapi/login", "/citizenapi/register",
                         "/dataanalystapi/login", "/dataanalystapi/register",
@@ -56,8 +58,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow the frontend origin
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+        // Allow frontend origins — localhost for development, Railway domain for production
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://humble-fulfillment-production-f04f.up.railway.app"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept"));
         // IMPORTANT: allowCredentials must be true to allow cookies (Refresh Token) to be sent cross-origin
